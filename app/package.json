@@ -1,0 +1,16 @@
+{
+  "name": "logsense",
+  "version": "1.0.0",
+  "description": "LogSense: AI error diagnosis for enterprise web apps (SAP UI5 + OData + LLM)",
+  "private": true,
+  "scripts": {
+    "start": "ui5 serve --open index.html",
+    "build": "ui5 build --clean-dest",
+    "lint": "ui5lint"
+  },
+  "devDependencies": {
+    "@ui5/cli": "^4.0.0",
+    "@ui5/linter": "^1.0.0",
+    "ui5-middleware-simpleproxy": "^3.0.0"
+  }
+}

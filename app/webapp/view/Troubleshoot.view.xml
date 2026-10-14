@@ -1,0 +1,88 @@
+<mvc:View
+	controllerName="logsense.controller.Troubleshoot"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core"
+	xmlns="sap.m">
+	<Page
+		id="troubleshootPage"
+		title="{i18n>troubleshootTitle}"
+		showNavButton="true"
+		navButtonPress=".onNavBack">
+		<content>
+			<Panel id="capturedPanel" headerText="{i18n>capturedErrors}" expandable="true" expanded="true">
+				<List
+					id="errorList"
+					items="{log>/entries}"
+					noDataText="{i18n>noErrors}"
+					mode="SingleSelectMaster"
+					selectionChange=".onSelectEntry">
+					<StandardListItem
+						title="{log>kind} · HTTP {log>statusCode} {log>statusText}"
+						description="{log>message}"
+						info="{log>timestamp}"
+						icon="sap-icon://message-error"/>
+				</List>
+			</Panel>
+
+			<Panel id="inputPanel" headerText="{i18n>logInput}">
+				<VBox>
+					<Label text="{i18n>contextLabel}" labelFor="contextSelect"/>
+					<Select id="contextSelect" selectedKey="{view>/context}" width="16rem">
+						<core:Item key="odata" text="{i18n>ctxOData}"/>
+						<core:Item key="abap" text="{i18n>ctxAbap}"/>
+						<core:Item key="ui5" text="{i18n>ctxUi5}"/>
+						<core:Item key="other" text="{i18n>ctxOther}"/>
+					</Select>
+					<TextArea
+						id="logInput"
+						class="ttLogArea sapUiSmallMarginTop"
+						value="{view>/input}"
+						rows="10"
+						width="100%"
+						growing="true"
+						growingMaxLines="20"
+						placeholder="{i18n>logPlaceholder}"/>
+					<HBox class="sapUiSmallMarginTop">
+						<Button
+							id="explainButton"
+							text="{i18n>explain}"
+							icon="sap-icon://lightbulb"
+							type="Emphasized"
+							busy="{view>/busy}"
+							press=".onExplain"/>
+						<Button
+							id="clearButton"
+							text="{i18n>clear}"
+							class="sapUiTinyMarginBegin"
+							press=".onClear"/>
+					</HBox>
+				</VBox>
+			</Panel>
+
+			<Panel id="resultPanel" headerText="{i18n>diagnosis}" visible="{= !!${view>/result} }">
+				<VBox>
+					<ObjectStatus
+						text="{view>/result/severity}"
+						state="{ path: 'view>/result/severity', formatter: '.formatter.severityState' }"
+						inverted="true"/>
+					<Text text="{view>/result/summary}" class="sapUiSmallMarginTop"/>
+
+					<Title text="{i18n>likelyCause}" level="H5" class="ttSectionTitle"/>
+					<Text text="{view>/result/likely_cause}"/>
+
+					<Title text="{i18n>fixSteps}" level="H5" class="ttSectionTitle"/>
+					<List id="fixList" items="{view>/result/fix_steps}" showSeparators="None">
+						<StandardListItem title="{view>}" icon="sap-icon://accept"/>
+					</List>
+
+					<Title text="{i18n>whereToLook}" level="H5" class="ttSectionTitle"/>
+					<Text text="{view>/result/where_to_look}"/>
+
+					<Text
+						class="sapUiSmallMarginTop"
+						text="{ parts: ['i18n>analysedBy', 'view>/result/source'], formatter: '.formatMessage' }"/>
+				</VBox>
+			</Panel>
+		</content>
+	</Page>
+</mvc:View>

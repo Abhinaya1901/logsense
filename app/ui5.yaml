@@ -1,0 +1,12 @@
+specVersion: "4.0"
+metadata:
+  name: logsense
+type: application
+server:
+  customMiddleware:
+    # Proxies /northwind/* to the public Northwind OData V2 service (avoids browser CORS issues)
+    - name: ui5-middleware-simpleproxy
+      afterMiddleware: compression
+      mountPath: /northwind
+      configuration:
+        baseUri: "https://services.odata.org/V2/Northwind/Northwind.svc"

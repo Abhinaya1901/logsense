@@ -1,0 +1,9 @@
+.ttLogArea textarea {
+	font-family: "72Mono", Consolas, "Courier New", monospace;
+	font-size: 0.8125rem;
+}
+
+.ttSectionTitle {
+	margin-top: 1rem;
+	margin-bottom: 0.25rem;
+}

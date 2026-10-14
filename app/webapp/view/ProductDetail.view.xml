@@ -1,0 +1,55 @@
+<mvc:View
+	controllerName="logsense.controller.ProductDetail"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:form="sap.ui.layout.form"
+	xmlns="sap.m">
+	<Page
+		id="detailPage"
+		title="{i18n>detailTitle}"
+		showNavButton="true"
+		navButtonPress=".onNavBack">
+		<content>
+			<ObjectHeader
+				id="productHeader"
+				title="{ProductName}"
+				number="{UnitPrice}"
+				numberUnit="USD"
+				responsive="true">
+				<statuses>
+					<ObjectStatus
+						text="{= ${Discontinued} ? ${i18n>discontinued} : ${i18n>active} }"
+						state="{ path: 'Discontinued', formatter: '.formatter.discontinuedState' }"/>
+					<ObjectStatus
+						title="{i18n>colStock}"
+						text="{UnitsInStock}"
+						state="{
+							parts: ['UnitsInStock', 'ReorderLevel'],
+							formatter: '.formatter.stockState'
+						}"/>
+				</statuses>
+				<attributes>
+					<ObjectAttribute title="{i18n>colCategory}" text="{Category/CategoryName}"/>
+					<ObjectAttribute title="{i18n>quantityPerUnit}" text="{QuantityPerUnit}"/>
+					<ObjectAttribute title="{i18n>reorderLevel}" text="{ReorderLevel}"/>
+					<ObjectAttribute title="{i18n>unitsOnOrder}" text="{UnitsOnOrder}"/>
+				</attributes>
+			</ObjectHeader>
+			<form:SimpleForm
+				id="supplierForm"
+				title="{i18n>supplier}"
+				editable="false"
+				layout="ResponsiveGridLayout">
+				<Label text="{i18n>supplier}"/>
+				<Text text="{Supplier/CompanyName}"/>
+				<Label text="{i18n>contact}"/>
+				<Text text="{Supplier/ContactName}"/>
+				<Label text="{i18n>city}"/>
+				<Text text="{Supplier/City}"/>
+				<Label text="{i18n>country}"/>
+				<Text text="{Supplier/Country}"/>
+				<Label text="{i18n>phone}"/>
+				<Text text="{Supplier/Phone}"/>
+			</form:SimpleForm>
+		</content>
+	</Page>
+</mvc:View>

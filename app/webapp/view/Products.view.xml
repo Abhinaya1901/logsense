@@ -1,0 +1,75 @@
+<mvc:View
+	controllerName="logsense.controller.Products"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m">
+	<Page id="productsPage" title="{i18n>productsTitle}">
+		<headerContent>
+			<Button
+				id="simulateErrorButton"
+				text="{i18n>simulateError}"
+				icon="sap-icon://error"
+				type="Reject"
+				press=".onSimulateError"/>
+			<Button
+				id="troubleshootButton"
+				text="{= ${i18n>troubleshoot} + ' (' + ${log>/entries}.length + ')' }"
+				icon="sap-icon://wrench"
+				type="Emphasized"
+				press=".onOpenTroubleshoot"/>
+		</headerContent>
+		<content>
+			<Table
+				id="productsTable"
+				items="{
+					path: '/Products',
+					parameters: { expand: 'Category,Supplier' },
+					sorter: { path: 'ProductName' }
+				}"
+				growing="true"
+				growingThreshold="20"
+				growingScrollToLoad="true"
+				sticky="ColumnHeaders,HeaderToolbar">
+				<headerToolbar>
+					<OverflowToolbar id="productsToolbar">
+						<Title id="productsCount" text="{i18n>productsTitle}"/>
+						<ToolbarSpacer/>
+						<CheckBox id="lowStockCheck" text="{i18n>lowStockOnly}" select=".onFilterChange"/>
+						<SearchField
+							id="productSearch"
+							width="16rem"
+							placeholder="{i18n>searchPlaceholder}"
+							search=".onFilterChange"
+							liveChange=".onFilterChange"/>
+					</OverflowToolbar>
+				</headerToolbar>
+				<columns>
+					<Column id="colProduct"><Text text="{i18n>colProduct}"/></Column>
+					<Column id="colCategory" minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>colCategory}"/></Column>
+					<Column id="colSupplier" minScreenWidth="Desktop" demandPopin="true"><Text text="{i18n>colSupplier}"/></Column>
+					<Column id="colPrice" hAlign="End"><Text text="{i18n>colPrice}"/></Column>
+					<Column id="colStock" hAlign="End"><Text text="{i18n>colStock}"/></Column>
+					<Column id="colStatus" minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>colStatus}"/></Column>
+				</columns>
+				<items>
+					<ColumnListItem type="Navigation" press=".onItemPress">
+						<cells>
+							<ObjectIdentifier title="{ProductName}" text="{QuantityPerUnit}"/>
+							<Text text="{Category/CategoryName}"/>
+							<Text text="{Supplier/CompanyName}"/>
+							<ObjectNumber number="{UnitPrice}" unit="USD"/>
+							<ObjectNumber
+								number="{UnitsInStock}"
+								state="{
+									parts: ['UnitsInStock', 'ReorderLevel'],
+									formatter: '.formatter.stockState'
+								}"/>
+							<ObjectStatus
+								text="{= ${Discontinued} ? ${i18n>discontinued} : ${i18n>active} }"
+								state="{ path: 'Discontinued', formatter: '.formatter.discontinuedState' }"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</content>
+	</Page>
+</mvc:View>
